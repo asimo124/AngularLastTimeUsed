@@ -128,12 +128,21 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
       let t = 0;
       item.days.forEach((dayItem) => {
 
+        let useItemName = '';
+        let useColor = '';
+        this.itemsList.forEach((getItem) => {
+          if (getItem.id == this.selectedItem) {
+            useItemName = getItem.item_name;
+            useColor = getItem.color;
+          }
+        })
+
         if (dateUsed2 === dayItem.Date) {
           const newDesc = dayItem.desc;
           newDesc.push({
             id: this.selectedItem,
-            item_name: this.selectedName,
-            color: '#18cc99',
+            item_name: useItemName,
+            color: useColor,
             date_used: dateUsed2,
           });
           const newItemsUsed = this.itemsUsedList;
