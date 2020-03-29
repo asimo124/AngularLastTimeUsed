@@ -120,10 +120,10 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
   }
 
   handleOk(): void {
-    this.itemsUsedService.addItemUsed(this.selectedItem, this.dateUsed);
 
     const dateUsed2 = this.convertDateToString(this.dateUsed);
     let i = 0;
+    const newItemsUsed = this.itemsUsedList;
     this.itemsUsedList.forEach((item) => {
       let t = 0;
       item.days.forEach((dayItem) => {
@@ -132,7 +132,7 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
         let useColor = '';
         this.itemsList.forEach((getItem) => {
           if (getItem.id == this.selectedItem) {
-            useItemName = getItem.item_name;
+            useItemName = getItem.title;
             useColor = getItem.color;
           }
         })
@@ -145,17 +145,22 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
             color: useColor,
             date_used: dateUsed2,
           });
-          const newItemsUsed = this.itemsUsedList;
-          this.itemsUsedList = null;
+          console.log('did happen at 2');
           newItemsUsed[i].days[t].desc = newDesc;
-          this.itemsUsedList = newItemsUsed;
         }
         t++;
       });
       i++;
     });
+    console.log('newItemsUsed at 2: ', newItemsUsed);
+    this.itemsUsedList = null;
+    this.itemsUsedList = newItemsUsed;
 
-    this.itemsUsedService.loadItemsUsed(this.currentDaysBack);
+    this.itemsUsedService.addItemUsed(this.selectedItem, this.dateUsed);
+
+
+
+    // this.itemsUsedService.loadItemsUsed(this.currentDaysBack);
     this.isVisible = false;
   }
 

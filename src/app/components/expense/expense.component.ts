@@ -32,7 +32,7 @@ export class ExpenseComponent implements OnInit {
     getEvent.stopPropagation();
     this.removedItem.emit(id);
     this.itemsUsedService.removeItemUsed(id);
-    this.itemsUsedService.loadItemsUsed(this.daysBack);
+    // this.itemsUsedService.loadItemsUsed(this.daysBack);
   }
 
 }
