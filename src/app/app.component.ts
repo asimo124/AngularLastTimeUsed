@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
   subs: Subscription[] = [];
 
   selectedItem = 1;
+  selectedName = '';
   dateUsed: Date;
 
   dateFormat = 'MM/dd/yyyy';
@@ -47,6 +48,7 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
         this.itemsList = response;
         if (this.itemsList && this.itemsList.length > 0) {
           this.selectedItem = this.itemsList[0].id;
+          this.selectedName = this.itemsList[0].title;
         }
         console.log('itemsList: ', this.itemsList);
       }
@@ -92,6 +94,7 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
     }
     if (this.itemsList && this.itemsList.length > 0) {
       this.selectedItem = this.itemsList[0].id;
+      this.selectedName = this.itemsList[0].title;
     }
     this.isVisible = true;
   }
@@ -100,8 +103,50 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
 
   }
 
+  convertDateToString(getDate: Date) {
+
+    const day = getDate.getDate();
+    const month = getDate.getMonth() + 1;
+    const year = getDate.getFullYear();
+    let day2 = String(day);
+    if (day < 10) {
+      day2 = '0' + day;
+    }
+    let month2 = String(month);
+    if (month < 10) {
+      month2 = '0' + month;
+    }
+    return month2 + '/' + day2 + '/' + year;
+  }
+
   handleOk(): void {
     this.itemsUsedService.addItemUsed(this.selectedItem, this.dateUsed);
+
+    const dateUsed2 = this.convertDateToString(this.dateUsed);
+    let i = 0;
+    this.itemsUsedList.forEach((item) => {
+      let t = 0;
+      item.days.forEach((dayItem) => {
+
+        if (dateUsed2 === dayItem.Date) {
+          const newDesc = dayItem.desc;
+          newDesc.push({
+            id: this.selectedItem,
+            item_name: this.selectedName,
+            color: '#18cc99',
+            date_used: dateUsed2,
+          });
+          const newItemsUsed = this.itemsUsedList;
+          this.itemsUsedList = null;
+          newItemsUsed[i].days[t].desc = newDesc;
+          this.itemsUsedList = newItemsUsed;
+        }
+        t++;
+      });
+      i++;
+    });
+
+    this.itemsUsedService.loadItemsUsed(this.currentDaysBack);
     this.isVisible = false;
   }
 

@@ -51,7 +51,6 @@ export class ItemsUsedService {
     this.http.get<any>('https://api.hawleywebdesign.com/last-time/add-item-used?' + apiParams).subscribe(response => {
 
         console.log('Added Item Used');
-        this.loadItemsUsed();
       },
       (err) => {
         console.log('error', 'Error adding Item Used : ' + err.error.message);
@@ -68,7 +67,6 @@ export class ItemsUsedService {
     this.http.get<any>('https://api.hawleywebdesign.com/last-time/delete-item-used?' + apiParams).subscribe(response => {
 
         console.log('Deleted Item used');
-        this.loadItemsUsed();
       },
       (err) => {
         console.log('error', 'Error deleting Item Used : ' + err.error.message);

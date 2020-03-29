@@ -1,7 +1,7 @@
 <div
   nz-row nzType="flex"
   nzJustify="space-around"
-  *ngFor="let week of billsDays">
+  *ngFor="let week of billsDays; let i = index">
     <div
       *ngFor="let day of week.days"
       nz-col
@@ -12,7 +12,9 @@
     >
       <span *ngIf="day.Month" class="month-name">{{ day.Month }} - </span><span style="font-weight: bold">{{ day.Day }}</span>
       <app-expense
+        (removedItem)="didRemoveItem(i, day.Date, $event)"
         [expenses]="day.desc"
+        [daysBack]="daysBack"
       ></app-expense>
       <div style="clear:both; height: 4px"></div>
     </div>

@@ -43,6 +43,7 @@
       <div style="clear: both; height: 10px;"></div>
       <app-days-of-week (doClick)="addItemUsed($event)"
         [billsDays]="itemsUsedList"
+        [daysBack]="currentDaysBack"
       ></app-days-of-week>
       <div [attr.id]="'top'"></div>
     </div>
