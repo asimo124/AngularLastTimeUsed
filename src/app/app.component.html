@@ -1,4 +1,4 @@
-<nz-layout class="layout">
+<nz-layout class="layout"  >
   <nz-header>
     <div class="logo"
          [style.background]="'url(assets/img/remember2.png)'"></div>
@@ -13,9 +13,38 @@
     <!--      <nz-breadcrumb-item>List</nz-breadcrumb-item>-->
     <!--      <nz-breadcrumb-item>App</nz-breadcrumb-item>-->
     <!--    </nz-breadcrumb>-->
-    <div class="inner-content">
+    <div class="inner-content" >
 
+      <div style="clear: both; height: 0px;"></div>
+      <div nz-row nzType="flex" nzJustify="space-between">
+        <div nz-col [nzSpan]="1" >
+          <button nz-button nzType="primary" (click)="backThreeMonths()">Back 3 Months</button>
+        </div>
+        <div nz-col [nzSpan]="2" >
+          <button nz-button nzType="danger" (click)="addItemUsed('')">Add Item Used</button>
+        </div>
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="Add Item Used" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
 
+          <div nz-row >
+            <div nz-col [nzSpan]="12" >
+              <nz-select [(ngModel)]="selectedItem" nzAllowClear nzPlaceHolder="Select Item" >
+                <nz-option [nzValue]="item.id" [nzLabel]="item.title" *ngFor="let item of itemsList"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col [nzSpan]="12" >
+              <nz-date-picker [(ngModel)]="dateUsed" (ngModelChange)="onDateChanged($event)" [nzFormat]="dateFormat"></nz-date-picker>
+            </div>
+          </div>
+        </nz-modal>
+        <div nz-col [nzSpan]="1" [style.margin-right]="'15px'">
+          <button nz-button nzType="default" (click)="loadItemsUsed()">Today</button>
+        </div>
+      </div>
+      <div style="clear: both; height: 10px;"></div>
+      <app-days-of-week (doClick)="addItemUsed($event)"
+        [billsDays]="itemsUsedList"
+      ></app-days-of-week>
+      <div [attr.id]="'top'"></div>
     </div>
   </nz-content>
 

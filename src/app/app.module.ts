@@ -12,11 +12,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 
+import { ItemsUsedService } from './services/items-used.service';
+import {DaysOfWeekComponent} from './components/days-of-week/days-of-week.component';
+import {ExpenseComponent} from './components/expense/expense.component';
+
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DaysOfWeekComponent,
+    ExpenseComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +33,7 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, ItemsUsedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
