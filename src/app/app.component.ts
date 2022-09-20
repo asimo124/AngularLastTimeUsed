@@ -15,12 +15,21 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
   };
   itemsUsedList: any[];
 
+  searchItemsUsedResults: {
+    results: any[];
+  };
+  searchItemsUsedList: any[];
+
   itemsList: any[];
+  keyword: string;
 
   currentDaysBack = 0;
   isVisible = false;
 
+  showSearch = false;
+
   subs: Subscription[] = [];
+
 
   selectedItem = 1;
   selectedName = '';
@@ -39,6 +48,15 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
         this.itemsUsedResults = response;
         this.itemsUsedList = response.results;
         console.log('itemsUsedList: ', this.itemsUsedList);
+      }
+    }));
+
+    //
+    this.subs.push(this.itemsUsedService.searchItemsUsedList.subscribe(response => {
+      if (response) {
+        this.searchItemsUsedResults = response;
+        this.searchItemsUsedList = response.results;
+        console.log('searchItemsUsedList: ', this.searchItemsUsedList);
       }
     }));
 
@@ -101,6 +119,18 @@ export class AppComponent implements OnInit, AfterViewChecked, AfterViewInit {
 
   onDateChanged(newDate: Date) {
 
+  }
+
+  toggleSearch() {
+
+    this.showSearch = !(this.showSearch);
+    if (this.showSearch) {
+      this.beginSearchItemsUsed();
+    }
+  }
+
+  beginSearchItemsUsed() {
+    this.itemsUsedService.searchItemUsed(this.keyword);
   }
 
   convertDateToString(getDate: Date) {

@@ -13,6 +13,12 @@ export class ItemsUsedService {
   private itemsUsedSource = new BehaviorSubject(this.itemsUsed);
   public itemsUsedList = this.itemsUsedSource.asObservable();
 
+  private searchItemsUsed: {
+    results: any[];
+  };
+  private searchItemsUsedSource = new BehaviorSubject(this.searchItemsUsed);
+  public searchItemsUsedList = this.searchItemsUsedSource.asObservable();
+
   private items: any[];
   private itemsSource = new BehaviorSubject(this.items);
   public itemsList = this.itemsSource.asObservable();
@@ -29,6 +35,17 @@ export class ItemsUsedService {
     (err) => {
       console.log('error', 'Error loading Items Used History : ' + err.error.message);
     });
+  }
+
+  searchItemUsed(keyword) {
+    const requestParams = 'keyword=' + keyword;
+    this.http.get<any>('https://api.hawleywebdesign.com/last-time/search?' + requestParams).subscribe(response => {
+
+        this.searchItemsUsedSource.next(response);
+      },
+      (err) => {
+        console.log('error', 'Error loading Items Used History : ' + err.error.message);
+      });
   }
 
   loadItems() {

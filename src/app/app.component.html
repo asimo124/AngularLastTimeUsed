@@ -18,10 +18,18 @@
       <div style="clear: both; height: 0px;"></div>
       <div nz-row nzType="flex" nzJustify="space-between">
         <div nz-col [nzSpan]="1" >
-          <button nz-button nzType="primary" (click)="backThreeMonths()">Back 3 Months</button>
+          <button nz-button nzType="primary" (click)="backThreeMonths()">Back</button>
         </div>
-        <div nz-col [nzSpan]="2" >
-          <button nz-button nzType="danger" (click)="addItemUsed('')">Add Item Used</button>
+        <div nz-col [nzSpan]="1" >
+          <button nz-button nzType="danger" (click)="addItemUsed('')">Add Item</button>
+        </div>
+        <div nz-col [nzSpan]="1" >
+          <ng-container *ngIf="!showSearch; else backButton">
+            <button nz-button nzType="default" (click)="toggleSearch()">Search</button>
+          </ng-container>
+          <ng-template #backButton>
+            <button nz-button nzType="danger" (click)="toggleSearch()">Back</button>
+          </ng-template>
         </div>
         <nz-modal [(nzVisible)]="isVisible" nzTitle="Add Item Used" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
 
@@ -36,16 +44,37 @@
             </div>
           </div>
         </nz-modal>
-        <div nz-col [nzSpan]="1" [style.margin-right]="'15px'">
+        <div nz-col [nzSpan]="1" [style.margin-right]="'44px'">
           <button nz-button nzType="default" (click)="loadItemsUsed()">Today</button>
         </div>
       </div>
       <div style="clear: both; height: 10px;"></div>
-      <app-days-of-week (doClick)="addItemUsed($event)"
-        [billsDays]="itemsUsedList"
-        [daysBack]="currentDaysBack"
-      ></app-days-of-week>
-      <div [attr.id]="'top'"></div>
+      <ng-container *ngIf="!showSearch; else search">
+        <app-days-of-week (doClick)="addItemUsed($event)"
+          [billsDays]="itemsUsedList"
+          [daysBack]="currentDaysBack"
+        ></app-days-of-week>
+        <div [attr.id]="'top'"></div>
+      </ng-container>
+      <ng-template #search >
+        <input nz-input placeholder="Search" [(ngModel)]="keyword" (ngModelChange)="beginSearchItemsUsed()"  />
+        <ng-container *ngIf="searchItemsUsedList?.length">
+          <h3 [ngStyle]="{ 'margin-bottom.px': 16, 'margin-top.px': 16 }">Search Results</h3>
+          <ng-container *ngFor="let dates of searchItemsUsedList" >
+            <nz-list nzBordered [nzHeader]="Header">
+                <ng-container *ngFor="let item of dates.children">
+                  <nz-list-item >
+                    {{ item.item_name }}
+                  </nz-list-item>
+                </ng-container>
+            </nz-list>
+            <ng-template #Header >
+              <span [ngStyle]="{ 'font-weight': 'bold', 'font-size': '16px' }">{{ dates.date }}</span>
+            </ng-template>
+            <div style="clear: both; height: 16px"></div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
     </div>
   </nz-content>
 
